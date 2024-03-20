@@ -9,6 +9,8 @@ interface EditMatchModalProps {
     setMatchInfo: any
 }
 
+const matchTypes = ['solo', 'duo', 'squad']
+
 const EditMatchModal: React.FC<EditMatchModalProps> = ({ setRefetch, refetch, matchInfo, setMatchInfo }) => {
     const [errorMessage, setErrorMessage] = useState('')
     const [loading, setLoading] = useState(false)
@@ -55,6 +57,7 @@ const EditMatchModal: React.FC<EditMatchModalProps> = ({ setRefetch, refetch, ma
             date: form.date.value,
             time: form.time.value,
             type: form.type.value,
+            slot: +(form.slot.value),
             map: form.map.value,
             per_kill: parseInt(form.perkill.value),
             roomId: form.roomid.value,
@@ -87,7 +90,9 @@ const EditMatchModal: React.FC<EditMatchModalProps> = ({ setRefetch, refetch, ma
 
     }
 
-
+    const getMatchTypes = () => {
+        return matchTypes.filter((type) => type !== matchInfo.type)
+    }
 
     return (
         <>
@@ -109,11 +114,23 @@ const EditMatchModal: React.FC<EditMatchModalProps> = ({ setRefetch, refetch, ma
                         <h3 className="font-semibold">Prize Money</h3>
                         <input type="text" required defaultValue={matchInfo.prize} name='prizemoney' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " />
                         <h3 className="font-semibold">Date</h3>
-                        <input type="text" required defaultValue={matchInfo.date} name='date' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " />
+                        <input type="date" required defaultValue={matchInfo.date} name='date' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " />
                         <h3 className="font-semibold">Time</h3>
-                        <input type="text" required defaultValue={matchInfo.time} name='time' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " />
+                        <input type="time" required defaultValue={matchInfo.time} name='time' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " />
                         <h3 className="font-semibold">Type</h3>
-                        <input type="text" required defaultValue={matchInfo.type} name='type' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " />
+                        <select name='type' className="select bg-slate-100 w-full select-sm focus:outline-none">
+                            <option selected value={matchInfo.type}>{matchInfo.type?.toUpperCase()}</option>
+
+                            {
+                                getMatchTypes().map((type, index) => (
+                                    <option value={type} key={index} className='text-black'>{type?.toUpperCase()}</option>
+                                ))
+                            }
+
+                        </select>
+
+                        <h3 className="font-semibold">Slot</h3>
+                        <input type="text" required defaultValue={matchInfo?.slot} name='slot' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " />
                         <h3 className="font-semibold">Map</h3>
                         <input type="text" required defaultValue={matchInfo.map} name='map' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " />
                         <h3 className="font-semibold">Per Kill</h3>

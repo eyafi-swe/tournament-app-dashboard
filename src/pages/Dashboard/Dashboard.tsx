@@ -5,19 +5,60 @@ import { FaMoneyBill1Wave } from "react-icons/fa6";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { BASE_URL } from '../../consts/const';
+import toast from 'react-hot-toast';
 
 const Dashboard: React.FC = () => {
-
+  const [refetch, setRefetch] = React.useState<boolean>(false);
   const [homeData, setHomeData] = React.useState<any>({});
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [paymentNumbers, setPaymentNumbers] = React.useState<any>({});
+  const [editPaymentNumbers, setEditPaymentNumbers] = React.useState<boolean>(false);
 
   useEffect(() => {
     fetch(BASE_URL + '/home')
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setHomeData(data);
-        // console.log(data);
+        setPaymentNumbers(data.paymentNumbers[0]);
       });
-  }, []);
+  }, [refetch]);
+
+  const handleSaveAccountNumbers = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const bkash = form.bkash.value;
+    const nagad = form.nagad.value;
+    const rocket = form.rocket.value;
+    const data = {
+      bkash,
+      nagad,
+      rocket
+    };
+
+    fetch(BASE_URL + `/home/payment-numbers/${paymentNumbers._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          toast.success(data.message);
+          setRefetch(!refetch);
+          form.reset();
+          setEditPaymentNumbers(false);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toast.error('Something went wrong!');
+      });
+  }
+
 
   return (
     <DefaultLayout>
@@ -56,9 +97,90 @@ const Dashboard: React.FC = () => {
         </CardDataStats>
       </div>
 
-      <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <div className="col-span-12">
-          {/* <TableOne /> */}
+      <div className="mt-4 grid md:grid-cols-3 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+        <div className="col-span-2">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Bkash / Nagad / Rocket Accounts
+              </h3>
+            </div>
+            <form className="flex flex-col gap-5.5 p-6.5" onSubmit={handleSaveAccountNumbers}>
+              <div>
+                <label className="mb-3 block text-black dark:text-white">
+                  Bkash Account
+                </label>
+                <input
+                  type="text"
+                  name='bkash'
+                  required
+                  placeholder="Bkash Account Number"
+                  defaultValue={editPaymentNumbers ? paymentNumbers?.bkash : ''}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="mb-3 block text-black dark:text-white">
+                  Nagad Account
+                </label>
+                <input
+                  type="text"
+                  name='nagad'
+                  required
+                  placeholder="Nagad Account Number"
+                  defaultValue={editPaymentNumbers ? paymentNumbers?.nagad : ''}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                />
+              </div>
+
+              <div>
+                <label className="mb-3 block font-medium text-black dark:text-white">
+                  Rocket Account
+                </label>
+                <input
+                  type="text"
+                  name='rocket'
+                  required
+                  placeholder="Rocket Account Number"
+                  defaultValue={editPaymentNumbers ? paymentNumbers?.rocket : ''}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:disabled:bg-black"
+                />
+              </div>
+
+              <input
+                type="submit"
+                value={`${loading ? 'Saving...' : 'Save'}`}
+                className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 ${loading ? 'opacity-50 disabled' : ''}`}
+              />
+
+            </form>
+          </div>
+        </div>
+
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark h-max">
+          <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+            <h3 className="font-medium text-black dark:text-white">
+              Account Numbers
+            </h3>
+
+            <div>
+              <div className=" mt-4">
+                <p className="text-black dark:text-white">Bkash Account</p>
+                <p className="text-black dark:text-white">{paymentNumbers?.bkash}</p>
+              </div>
+              <div className=" mt-4">
+                <p className="text-black dark:text-white">Nagad Account</p>
+                <p className="text-black dark:text-white">{paymentNumbers?.nagad}</p>
+              </div>
+              <div className=" mt-4">
+                <p className="text-black dark:text-white">Rocket Account</p>
+                <p className="text-black dark:text-white">{paymentNumbers?.rocket}</p>
+              </div>
+            </div>
+            <button className='btn btn-success text-white font-bold mt-5 w-full' onClick={() => setEditPaymentNumbers(true)}>Edit</button>
+          </div>
+
         </div>
       </div>
     </DefaultLayout>

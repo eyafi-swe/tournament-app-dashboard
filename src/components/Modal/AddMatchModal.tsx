@@ -56,6 +56,7 @@ const AddMatchModal: React.FC<AddMatchModalProps> = ({ categories, setOpenAddMat
             date: form.date.value,
             time: form.time.value,
             type: form.type.value,
+            slot: +(form.slot.value),
             map: form.map.value,
             per_kill: parseInt(form.perkill.value),
             roomId: form.roomid.value,
@@ -114,21 +115,28 @@ const AddMatchModal: React.FC<AddMatchModalProps> = ({ categories, setOpenAddMat
                             ))}
                         </select>
                         <h3 className="font-semibold">Title</h3>
-                        <input type="text" name='title' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='title' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Join Fee</h3>
-                        <input type="text" name='joinFee' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='joinFee' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Prize Money</h3>
-                        <input type="text" name='prizemoney' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='prizemoney' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Date</h3>
-                        <input type="text" name='date' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="date" name='date' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Time</h3>
-                        <input type="text" name='time' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="time" name='time' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Type</h3>
-                        <input type="text" name='type' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <select name='type' className="select bg-slate-100 w-full select-sm focus:outline-none">
+                            <option selected value='solo'>Solo</option>
+                            <option value='duo' className='text-black'>Duo</option>
+                            <option value='squad' className='text-black'>Squad</option>
+
+                        </select>
+                        <h3 className="font-semibold">Slot</h3>
+                        <input required type="number" name='slot' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Map</h3>
-                        <input type="text" name='map' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='map' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Per Kill</h3>
-                        <input type="text" name='perkill' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='perkill' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Room ID</h3>
                         <input type="text" name='roomid' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
                         <h3 className="font-semibold">Pass Code</h3>
@@ -138,25 +146,25 @@ const AddMatchModal: React.FC<AddMatchModalProps> = ({ categories, setOpenAddMat
                         <h3 className='font-semibold text-center mt-2'>Prize Pole</h3>
 
                         <h3 className="font-semibold">Winner</h3>
-                        <input type="text" name='winner' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='winner' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
 
                         <h3 className="font-semibold">Second</h3>
-                        <input type="text" name='secondplace' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='secondplace' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
 
                         <h3 className="font-semibold">Third</h3>
-                        <input type="text" name='thirdplace' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='thirdplace' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
 
                         <h3 className="font-semibold">Fourth</h3>
-                        <input type="text" name='fourthplace' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='fourthplace' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
 
                         <h3 className="font-semibold">Fifth</h3>
-                        <input type="text" name='fifthplace' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='fifthplace' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
 
                         <h3 className="font-semibold">Per Kill</h3>
-                        <input type="text" name='perkillwinner' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='perkillwinner' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
 
                         <h3 className="font-semibold">Total</h3>
-                        <input type="text" name='total' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
+                        <input required type="text" name='total' placeholder="Type here" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-200 w-full " />
 
                         <p className='text-red-500 text-sm'>{errorMessage}</p>
                         <button className={`btn btn-md text-white btn-accent mt-5 w-full ${loading ? 'loading-spinner' : ''}`}>Save</button>

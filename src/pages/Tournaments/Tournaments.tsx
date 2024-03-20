@@ -97,6 +97,14 @@ const Tournaments = () => {
             .catch(err => (err))
     }
 
+    const returnJoinedMatchPlayers = (players: any) => {
+        let joinedPlayers = []
+        for (let player in players) {
+            joinedPlayers.push(players[player])
+        }
+        return joinedPlayers
+    }
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Tournaments" />
@@ -148,6 +156,7 @@ const Tournaments = () => {
                                         <p className='font-semibold'>Date: {match.date}</p>
                                         <p className='font-semibold'>Time: {match.time}</p>
                                         <p className='font-semibold'>Type: {match.type}</p>
+                                        <p className='font-semibold'>Slot: {match?.slot}</p>
                                         <p className='font-semibold'>Map: {match.map}</p>
                                         <p className='font-semibold'>Per Kill: {match.per_kill}</p>
                                         <p className='font-semibold'>Room ID: {match.roomId}</p>
@@ -187,7 +196,16 @@ const Tournaments = () => {
                                                                 <tr key={index}>
                                                                     <th>{index + 1}</th>
                                                                     <td>{player?.user_email}</td>
-                                                                    <td>{player?.game_uid}</td>
+                                                                    <td>
+                                                                        {
+                                                                            returnJoinedMatchPlayers(player?.game_uid).map((uid, index) => {
+                                                                                return (
+                                                                                    <p key={index}>{index + 1}. {uid}</p>
+                                                                                )
+                                                                            })
+                                                                        }
+
+                                                                    </td>
                                                                     <td>
                                                                         <label htmlFor="my_modal_6" className=' btn btn-success btn-xs text-white' onClick={() => {
                                                                             setresultMatch({ matchId: match._id, title: match.title, time: match.time, date: match.date })
