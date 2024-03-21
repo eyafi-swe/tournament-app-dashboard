@@ -62,6 +62,13 @@ const MatchResultModal: React.FC<MatchResultModalProps> = ({ setRefetch, refetch
 
     }
 
+    const returnJoinedMatchPlayers = (players: any) => {
+        let joinedPlayers = []
+        for (let player in players) {
+            joinedPlayers.push(players[player])
+        }
+        return joinedPlayers
+    }
 
     return (
         <>
@@ -85,7 +92,7 @@ const MatchResultModal: React.FC<MatchResultModalProps> = ({ setRefetch, refetch
                             <h3 className="font-semibold">User</h3>
                             <input type="text" defaultValue={user.user_email} name='user_email' disabled placeholder="Type here" className="input input-sm focus:outline-none mt-1 disabled:border disabled:border-slate-100 disabled:bg-slate-100 disabled:text-black w-full " />
                             <h3 className="font-semibold">Game ID</h3>
-                            <input type="text" defaultValue={user.game_uid} name='game_uid' disabled placeholder="Type here" className="input input-sm focus:outline-none mt-1  disabled:border disabled:border-slate-100 disabled:bg-slate-100 disabled:text-black w-full " />
+                            <input type="text" defaultValue={returnJoinedMatchPlayers(user?.game_uid).map((uid, index) => uid)} name='game_uid' disabled placeholder="Type here" className="input input-sm focus:outline-none mt-1  disabled:border disabled:border-slate-100 disabled:bg-slate-100 disabled:text-black w-full " />
                             <h3 className="font-semibold">Position</h3>
                             <input type="text" name='position' defaultValue={result.position} placeholder="Position" className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full " required />
                             <h3 className="font-semibold">Total Kills</h3>
