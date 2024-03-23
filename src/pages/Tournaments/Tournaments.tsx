@@ -119,7 +119,7 @@ const Tournaments = () => {
   }
 
 
-  const handleRefundUser = (email: string, amount: any, id: string) => {
+  const handleRefundUser = (email: string, amount: any, id: string, game_uid: any) => {
     console.log(email, amount)
     const url2 = BASE_URL + `/users/deposit-wallet/${email}`;
     const url3 = BASE_URL + `/contests/match/remove-joined/${id}`;
@@ -134,7 +134,7 @@ const Tournaments = () => {
           fetch(url3, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email })
+            body: JSON.stringify({ email: email, game_uid: game_uid })
           })
             .then(res => res.json())
             .then(data => {
@@ -289,7 +289,7 @@ const Tournaments = () => {
                                       setresultUser(player)
                                     }}>Result</label>
                                     <button className='btn btn-danger btn-xs text-white ml-1'
-                                      onClick={() => handleRefundUser(player?.user_email, match?.joinFee, match._id)}
+                                      onClick={() => handleRefundUser(player?.user_email, match?.joinFee, match._id, player.game_uid)}
                                     >Refund</button>
                                     <button className='btn btn-danger btn-xs text-white ml-1'
                                       onClick={() => handleRemoveUser(player?.user_email, player.game_uid, match._id)}

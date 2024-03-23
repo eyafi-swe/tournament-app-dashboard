@@ -15,6 +15,18 @@ const EditMatchModal: React.FC<EditMatchModalProps> = ({ setRefetch, refetch, ma
     const [errorMessage, setErrorMessage] = useState('')
     const [loading, setLoading] = useState(false)
 
+    function tConvert(time: any) {
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+        if (time.length > 1) {
+            time = time.slice(1);
+            time[5] = +time[0] < 12 ? ' AM' : ' PM';
+            time[0] = +time[0] % 12 || 12;
+        }
+        return time.join('');
+    }
+
+
     const handleEditMatch = (e: any) => {
         e.preventDefault()
 
@@ -50,12 +62,14 @@ const EditMatchModal: React.FC<EditMatchModalProps> = ({ setRefetch, refetch, ma
             }
         ]
 
+        const time = tConvert(form.time.value)
+        console.log(time)
         const data = {
             title: form.title.value,
             joinFee: parseInt(form.joinFee.value),
             prize: parseInt(form.prizemoney.value),
             date: form.date.value,
-            time: form.time.value,
+            time: time,
             type: form.type.value,
             slot: +(form.slot.value),
             map: form.map.value,

@@ -60,6 +60,7 @@ const AddMatchModal: React.FC<AddMatchModalProps> = ({ categories, setOpenAddMat
         ]
 
         const time = tConvert(form.time.value)
+
         const data = {
             parent_id: form.category.value,
             title: form.title.value,
