@@ -11,13 +11,17 @@ const DepositRequests = () => {
     const [refetch, setRefetch] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [search, setSearch] = useState('');
+    const [searchInput, setSearchInput] = useState('');
 
 
     useEffect(() => {
         const fetchRequests = async () => {
+            setLoading(true);
             try {
-                const response = await fetch(`${BASE_URL}/deposit-money?page=${currentPage}&limit=100`);
+                const response = await fetch(`${BASE_URL}/deposit-money?page=${currentPage}&limit=100&transactionId=${search}`);
                 const data = await response.json();
+                console.log(data);
                 setData(data.data);
                 setTotalPages(data.pagination.totalPages);
             } catch (err) {
@@ -28,7 +32,23 @@ const DepositRequests = () => {
         };
 
         fetchRequests();
-    }, [currentPage, refetch]);
+    }, [currentPage, refetch, search]);
+
+
+    useEffect(() => {
+        if (searchInput.trim() === '') {
+            setSearch('');
+        }
+    }, [searchInput]);
+
+    const handleSearchInput = () => {
+        console.log(searchInput);
+        if (searchInput.trim() === '') {
+            return;
+        }
+        setCurrentPage(1);
+        setSearch(searchInput);
+    };
 
     const handleApprove = async (email: string, amount: any, id: string) => {
         const url1 = BASE_URL + `/deposit-money/${id}`;
@@ -99,19 +119,29 @@ const DepositRequests = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Deposit Requests" />
-            <TableThree
-                header1='Name'
-                header2='Email'
-                header3='Amount'
-                header4='Method'
-                header5='Acc. Number'
-                header6='Status'
-                header7='Date'
-                data={data}
-                dataType='deposit'
-                onPressApprove={handleApprove}
-                onPressDelete={handleDelete}
-            />
+            <div className='mb-5 flex items-center w-full gap-3 md:w-1/2'>
+                <label className="input input-bordered focus:outline-none bg-slate-200 flex items-center gap-2 w-full">
+                    <input type="text" className="grow" placeholder="Search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
+                </label>
+                <button className='btn btn-warning' onClick={handleSearchInput}>Search</button>
+            </div>
+            {
+                loading ? <div className='flex justify-center items-center h-[40vh]'><progress className="progress w-56"></progress></div> :
+                    <TableThree
+                        header1='Name'
+                        header2='Email'
+                        header3='Amount'
+                        header4='Method'
+                        header5='Acc. Number'
+                        header6='Status'
+                        header7='Date'
+                        data={data}
+                        dataType='deposit'
+                        onPressApprove={handleApprove}
+                        onPressDelete={handleDelete}
+                    />
+            }
             <div className="join grid grid-cols-2 mt-5">
                 <button className="join-item btn btn-outline" onClick={handlePagePrev}>Previous page</button>
                 <button className="join-item btn btn-outline" onClick={handlePageNext}>Next</button>
