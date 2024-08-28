@@ -54,22 +54,17 @@ const SignIn: React.FC = () => {
       .finally(() => {
         setIsLoading(false);
       });
-
-  }
+  };
 
   return (
-    <div className='w-11/12 mx-auto justify-center items-center py-20'>
-
+    <div className="w-11/12 mx-auto justify-center items-center py-20">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
               <div className="mb-5.5 flex items-center justify-center">
-                <img className="hidden dark:block" src={Logo} alt="Logo" />
-                <img className="dark:hidden h-20" src={Logo} alt="Logo" />
-                <p className='text-black font-bold text-2xl'>Cholo Kheli Dashboard</p>
+                <p className="text-black font-bold text-2xl">Dashboard</p>
               </div>
-
 
               <span className="mt-15 inline-block">
                 <svg
@@ -211,7 +206,7 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="email"
-                      name='email'
+                      name="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -243,7 +238,7 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="password"
-                      name='password'
+                      name="password"
                       placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -270,7 +265,9 @@ const SignIn: React.FC = () => {
                       </svg>
                     </span>
                   </div>
-                  {errorMessage && <p className='text-sm text-rose-600 mt-1'>{errorMessage}</p>}
+                  {errorMessage && (
+                    <p className="text-sm text-rose-600 mt-1">{errorMessage}</p>
+                  )}
                 </div>
 
                 <div className="mb-5">
@@ -281,15 +278,12 @@ const SignIn: React.FC = () => {
                     {isLoading ? 'Please Wait...' : 'Sign In'}
                   </button>
                 </div>
-
-
               </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-
   );
 };
 

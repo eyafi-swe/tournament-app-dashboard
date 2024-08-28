@@ -36,7 +36,7 @@ function App() {
           index
           element={
             <PrivateRoute>
-              <PageTitle title="CholoKheli Dashboard" />
+              <PageTitle title="TrySports Dashboard" />
               <Dashboard />
             </PrivateRoute>
           }
@@ -125,7 +125,6 @@ function App() {
             </>
           }
         />
-
       </Routes>
     </>
   );

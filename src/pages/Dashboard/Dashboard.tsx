@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import CardDataStats from '../../components/CardDataStats';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { FaMoneyBill1Wave } from "react-icons/fa6";
-import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { RiMoneyDollarCircleFill } from "react-icons/ri";
+import { FaMoneyBill1Wave } from 'react-icons/fa6';
+import { FaMoneyBillTrendUp } from 'react-icons/fa6';
+import { RiMoneyDollarCircleFill } from 'react-icons/ri';
 import { BASE_URL } from '../../consts/const';
 import toast from 'react-hot-toast';
 
@@ -11,8 +11,12 @@ const Dashboard: React.FC = () => {
   const [refetch, setRefetch] = React.useState<boolean>(false);
   const [homeData, setHomeData] = React.useState<any>({});
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [paymentNumbers, setPaymentNumbers] = React.useState<any>({});
-  const [editPaymentNumbers, setEditPaymentNumbers] = React.useState<boolean>(false);
+  const [paymentNumbers, setPaymentNumbers] = React.useState<any>([]);
+  const [suuportCenter, setSupportCenter] = React.useState<any>({});
+  const [editSupportCenter, setEditSupportCenter] =
+    React.useState<boolean>(false);
+  const [editPaymentNumbers, setEditPaymentNumbers] =
+    React.useState<boolean>(false);
 
   useEffect(() => {
     fetch(BASE_URL + '/home')
@@ -20,7 +24,8 @@ const Dashboard: React.FC = () => {
       .then((data) => {
         console.log(data);
         setHomeData(data);
-        setPaymentNumbers(data.paymentNumbers[0]);
+        setPaymentNumbers(data.paymentNumbers);
+        setSupportCenter(data.support);
       });
   }, [refetch]);
 
@@ -33,15 +38,15 @@ const Dashboard: React.FC = () => {
     const data = {
       bkash,
       nagad,
-      rocket
+      rocket,
     };
 
     fetch(BASE_URL + `/home/payment-numbers/${paymentNumbers._id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -57,22 +62,75 @@ const Dashboard: React.FC = () => {
         console.error('Error:', error);
         toast.error('Something went wrong!');
       });
-  }
+  };
 
+  const handleSaveSupportCenter = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const telegram = (form.elements[0] as HTMLInputElement).value;
+    const youtube = (form.elements[1] as HTMLInputElement).value;
+    const facebook = (form.elements[2] as HTMLInputElement).value;
+    const data = {
+      telegram,
+      youtube,
+      facebook,
+    };
+    fetch(BASE_URL + `/home/support/${suuportCenter._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          toast.success(data.message);
+          setRefetch(!refetch);
+          form.reset();
+          setEditSupportCenter(false);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toast.error('Something went wrong!');
+      });
+  };
 
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total Depositted" total={`${homeData.totalDepositted} BDT`} rate="" levelUp>
+        <CardDataStats
+          title="Total Depositted"
+          total={`${homeData.totalDepositted} BDT`}
+          rate=""
+          levelUp
+        >
           <FaMoneyBill1Wave className="fill-primary dark:fill-white text-xl" />
         </CardDataStats>
-        <CardDataStats title="Total Withdraw" total={`${homeData.totalWithdraw} BDT`} rate="" levelUp>
+        <CardDataStats
+          title="Total Withdraw"
+          total={`${homeData.totalWithdraw} BDT`}
+          rate=""
+          levelUp
+        >
           <FaMoneyBillTrendUp className="fill-primary dark:fill-white text-xl" />
         </CardDataStats>
-        <CardDataStats title="Total Users Wallet Balance" total={`${homeData.totalWallet} BDT`} rate="" levelUp>
+        <CardDataStats
+          title="Total Users Wallet Balance"
+          total={`${homeData.totalWallet} BDT`}
+          rate=""
+          levelUp
+        >
           <RiMoneyDollarCircleFill className="fill-primary dark:fill-white text-2xl" />
         </CardDataStats>
-        <CardDataStats title="Total Users" total={homeData.totalUsers} rate="" levelDown>
+        <CardDataStats
+          title="Total Users"
+          total={homeData.totalUsers}
+          rate=""
+          levelDown
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -105,14 +163,17 @@ const Dashboard: React.FC = () => {
                 Bkash / Nagad / Rocket Accounts
               </h3>
             </div>
-            <form className="flex flex-col gap-5.5 p-6.5" onSubmit={handleSaveAccountNumbers}>
+            <form
+              className="flex flex-col gap-5.5 p-6.5"
+              onSubmit={handleSaveAccountNumbers}
+            >
               <div>
                 <label className="mb-3 block text-black dark:text-white">
                   Bkash Account
                 </label>
                 <input
                   type="text"
-                  name='bkash'
+                  name="bkash"
                   required
                   placeholder="Bkash Account Number"
                   defaultValue={editPaymentNumbers ? paymentNumbers?.bkash : ''}
@@ -126,7 +187,7 @@ const Dashboard: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  name='nagad'
+                  name="nagad"
                   required
                   placeholder="Nagad Account Number"
                   defaultValue={editPaymentNumbers ? paymentNumbers?.nagad : ''}
@@ -140,10 +201,12 @@ const Dashboard: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  name='rocket'
+                  name="rocket"
                   required
                   placeholder="Rocket Account Number"
-                  defaultValue={editPaymentNumbers ? paymentNumbers?.rocket : ''}
+                  defaultValue={
+                    editPaymentNumbers ? paymentNumbers?.rocket : ''
+                  }
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:disabled:bg-black"
                 />
               </div>
@@ -151,9 +214,10 @@ const Dashboard: React.FC = () => {
               <input
                 type="submit"
                 value={`${loading ? 'Saving...' : 'Save'}`}
-                className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 ${loading ? 'opacity-50 disabled' : ''}`}
+                className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 ${
+                  loading ? 'opacity-50 disabled' : ''
+                }`}
               />
-
             </form>
           </div>
         </div>
@@ -167,20 +231,130 @@ const Dashboard: React.FC = () => {
             <div>
               <div className=" mt-4">
                 <p className="text-black dark:text-white">Bkash Account</p>
-                <p className="text-black dark:text-white">{paymentNumbers?.bkash}</p>
+                <p className="text-black dark:text-white">
+                  {paymentNumbers?.bkash}
+                </p>
               </div>
               <div className=" mt-4">
                 <p className="text-black dark:text-white">Nagad Account</p>
-                <p className="text-black dark:text-white">{paymentNumbers?.nagad}</p>
+                <p className="text-black dark:text-white">
+                  {paymentNumbers?.nagad}
+                </p>
               </div>
               <div className=" mt-4">
                 <p className="text-black dark:text-white">Rocket Account</p>
-                <p className="text-black dark:text-white">{paymentNumbers?.rocket}</p>
+                <p className="text-black dark:text-white">
+                  {paymentNumbers?.rocket}
+                </p>
               </div>
             </div>
-            <button className='btn btn-success text-white font-bold mt-5 w-full' onClick={() => setEditPaymentNumbers(true)}>Edit</button>
+            <button
+              className="btn btn-success text-white font-bold mt-5 w-full"
+              onClick={() => setEditPaymentNumbers(true)}
+            >
+              Edit
+            </button>
           </div>
+        </div>
+      </div>
 
+      <div className="mt-4 grid md:grid-cols-3 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+        <div className="col-span-2">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Support Center
+              </h3>
+            </div>
+            <form
+              className="flex flex-col gap-5.5 p-6.5"
+              onSubmit={handleSaveSupportCenter}
+            >
+              <div>
+                <label className="mb-3 block text-black dark:text-white">
+                  Telegram Link
+                </label>
+                <input
+                  type="text"
+                  name="telegram"
+                  required
+                  placeholder="Teleram Link"
+                  defaultValue={
+                    editSupportCenter ? suuportCenter?.telegram : ''
+                  }
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="mb-3 block text-black dark:text-white">
+                  YouTube Link
+                </label>
+                <input
+                  type="text"
+                  name="youtube"
+                  required
+                  placeholder="YouTube Link"
+                  defaultValue={editSupportCenter ? suuportCenter?.youtube : ''}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="mb-3 block text-black dark:text-white">
+                  Facebook Link
+                </label>
+                <input
+                  type="text"
+                  name="facebook"
+                  required
+                  placeholder="Facebook Link"
+                  defaultValue={
+                    editSupportCenter ? suuportCenter?.facebook : ''
+                  }
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:text-white"
+                />
+              </div>
+
+              <input
+                type="submit"
+                value={`${loading ? 'Saving...' : 'Save'}`}
+                className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 ${
+                  loading ? 'opacity-50 disabled' : ''
+                }`}
+              />
+            </form>
+          </div>
+        </div>
+
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark h-max">
+          <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+            <h3 className="font-medium text-black dark:text-white">
+              Support Contact
+            </h3>
+
+            <div>
+              <div className=" mt-4">
+                <p className="text-black dark:text-white">Telegram</p>
+                <p className="text-green-500 dark:text-white">
+                  {suuportCenter?.telegram}
+                </p>
+                <p className="text-black dark:text-white">Youtube</p>
+                <p className="text-green-500 dark:text-white">
+                  {suuportCenter?.youtube}
+                </p>
+                <p className="text-black dark:text-white">Facebook</p>
+                <p className="text-green-500 dark:text-white">
+                  {suuportCenter?.facebook}
+                </p>
+              </div>
+            </div>
+            <button
+              className="btn btn-success text-white font-bold mt-5 w-full"
+              onClick={() => setEditSupportCenter(true)}
+            >
+              Edit
+            </button>
+          </div>
         </div>
       </div>
     </DefaultLayout>

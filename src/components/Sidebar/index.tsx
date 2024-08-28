@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../../images/logo/Logo.png';
-import { GrGamepad } from "react-icons/gr";
-import { FaMoneyBillTransfer, FaMoneyBill1Wave, FaMoneyBillTrendUp } from "react-icons/fa6";
-import { GiTakeMyMoney } from "react-icons/gi";
-import { TfiAnnouncement } from "react-icons/tfi";
-import { GrUserAdmin } from "react-icons/gr";
+import { GrGamepad } from 'react-icons/gr';
+import {
+  FaMoneyBillTransfer,
+  FaMoneyBill1Wave,
+  FaMoneyBillTrendUp,
+} from 'react-icons/fa6';
+import { GiTakeMyMoney } from 'react-icons/gi';
+import { TfiAnnouncement } from 'react-icons/tfi';
+import { GrUserAdmin } from 'react-icons/gr';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -21,7 +25,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
   const [sidebarExpanded, setSidebarExpanded] = useState(
-    storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
+    storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
   );
 
   // close on click outside
@@ -62,14 +66,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <img src={Logo} alt="Logo" className='h-20' />
-        <p className='font-semibold text-lg text-white'>Dashboard</p>
-
+        {/* <img src={Logo} alt="Logo" className='h-20' /> */}
+        <p className="font-semibold text-lg text-white">Dashboard</p>
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
@@ -86,11 +90,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/"
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
-                    pathname.includes('dashboard')) &&
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    (pathname === '/' || pathname.includes('dashboard')) &&
                     'bg-graydark dark:bg-meta-4'
-                    }`}
-
+                  }`}
                 >
                   <svg
                     className="fill-current"
@@ -118,17 +121,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     />
                   </svg>
                   Dashboard
-
                 </NavLink>
               </li>
-
 
               <li>
                 <NavLink
                   to="/tournaments"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('tournaments') &&
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('tournaments') &&
                     'bg-graydark dark:bg-meta-4'
-                    }`}
+                  }`}
                 >
                   <GrGamepad className="text-lg" />
                   Tournaments
@@ -139,8 +141,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/deposit-requests"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('deposit-requests') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('deposit-requests') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
                 >
                   <FaMoneyBillTransfer className="text-lg" />
                   Deposit Requests
@@ -150,8 +154,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/deposit-history"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('deposit-history') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('deposit-history') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
                 >
                   <FaMoneyBill1Wave className="text-lg" />
                   Deposit History
@@ -161,8 +167,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/withdraw-requests"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('withdraw-requests') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('withdraw-requests') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
                 >
                   <FaMoneyBillTrendUp className="text-lg" />
                   Withdraw Requests
@@ -172,8 +180,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/withdraw-history"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('withdraw-history') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('withdraw-history') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
                 >
                   <GiTakeMyMoney className="text-2xl" />
                   Withdraw History
@@ -183,8 +193,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/announcement"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('announcement') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('announcement') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
                 >
                   <TfiAnnouncement className="text-xl" />
                   Announcement
@@ -192,13 +204,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               {/* <!-- Menu Item Tables --> */}
 
-
               {/* <!-- Menu Item users --> */}
               <li>
                 <NavLink
                   to="/all-app-users"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('all-app-users') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('all-app-users') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
                 >
                   <svg
                     className="fill-current"
@@ -226,15 +239,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/manage-admins"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-yellow-500 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('manage-admins') && 'bg-graydark dark:bg-meta-4'
-                    }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-yellow-500 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('manage-admins') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
                 >
                   <GrUserAdmin className="text-xl" />
                   Manage Admins
                 </NavLink>
               </li>
               {/* <!-- Menu Item Admins --> */}
-
             </ul>
           </div>
         </nav>
