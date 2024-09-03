@@ -13,6 +13,7 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [paymentNumbers, setPaymentNumbers] = React.useState<any>([]);
   const [suuportCenter, setSupportCenter] = React.useState<any>({});
+  const [matchVideos, setMatchVideos] = React.useState<any>([]);
   const [editSupportCenter, setEditSupportCenter] =
     React.useState<boolean>(false);
   const [editPaymentNumbers, setEditPaymentNumbers] =
@@ -26,6 +27,7 @@ const Dashboard: React.FC = () => {
         setHomeData(data);
         setPaymentNumbers(data.paymentNumbers);
         setSupportCenter(data.support);
+        setMatchVideos(data.matchVideos);
       });
   }, [refetch]);
 
@@ -95,6 +97,58 @@ const Dashboard: React.FC = () => {
       .catch((error) => {
         console.error('Error:', error);
         toast.error('Something went wrong!');
+      });
+  };
+
+  const handleSaveVideoLinks = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const title = (form.elements[0] as HTMLInputElement).value;
+    const videoLink = (form.elements[1] as HTMLInputElement).value;
+    const data = {
+      title,
+      videoLink,
+    };
+    fetch(BASE_URL + `/home/match-videos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          toast.success(data.message);
+          setRefetch(!refetch);
+          form.reset();
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toast.error('Something went wrong!');
+      });
+  };
+
+  const handleDeletVideoLink = (id: string) => {
+    fetch(BASE_URL + `/home/match-videos/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          toast.success(data.message);
+          setRefetch(!refetch);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toast.error('Something went wrong');
       });
   };
 
@@ -354,6 +408,86 @@ const Dashboard: React.FC = () => {
             >
               Edit
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* // Video Data */}
+      <div className="mt-4 grid md:grid-cols-3 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+        <div className="col-span-2">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Match Videos
+              </h3>
+            </div>
+            <form
+              className="flex flex-col gap-5.5 p-6.5"
+              onSubmit={handleSaveVideoLinks}
+            >
+              <div>
+                <label className="mb-3 block text-black dark:text-white">
+                  Match Title
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  required
+                  placeholder="Match Title"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="mb-3 block text-black dark:text-white">
+                  Video Link
+                </label>
+                <input
+                  type="text"
+                  name="videoLink"
+                  required
+                  placeholder="Video Link"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <input
+                type="submit"
+                value={`${loading ? 'Saving...' : 'Save'}`}
+                className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 ${
+                  loading ? 'opacity-50 disabled' : ''
+                }`}
+              />
+            </form>
+          </div>
+        </div>
+
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark h-max">
+          <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+            <h3 className="font-medium text-black dark:text-white">
+              All Video Links
+            </h3>
+
+            {matchVideos?.map((video: any, index: number) => (
+              <div className="" key={index}>
+                <div className=" mt-4">
+                  <p className="text-black dark:text-white">
+                    Match Title: {video?.title}
+                  </p>
+                  <p className="text-green-500 dark:text-white">
+                    Link:{' '}
+                    <a href={video?.videoLink} target="_blank">
+                      {video?.videoLink}
+                    </a>
+                  </p>
+                  <button
+                    className="btn btn-xs bg-red-500 border-none"
+                    onClick={() => handleDeletVideoLink(video?._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

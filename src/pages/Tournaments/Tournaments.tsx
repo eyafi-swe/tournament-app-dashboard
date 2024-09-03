@@ -87,6 +87,22 @@ const Tournaments = () => {
       .catch((err) => err);
   };
 
+  const handleEndMatch = (id: string) => {
+    fetch(`${BASE_URL}/contests/match/end/${id}`, {
+      method: 'PUT',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success('Match Ended Successfully!');
+          setRefetchEdited(!refetchEdited);
+        } else {
+          toast.error('Match End Failed! Try Again Later!');
+        }
+      })
+      .catch((err) => err);
+  };
+
   const returnJoinedMatchPlayers = (players: any) => {
     let joinedPlayers = [];
     for (let player in players) {
@@ -250,6 +266,14 @@ const Tournaments = () => {
                     >
                       Edit
                     </label>
+                    <button
+                      className="mt-5 btn  btn-sm bg-red-500 border-none text-white"
+                      onClick={() => {
+                        handleEndMatch(match._id);
+                      }}
+                    >
+                      {match?.status == 'end' ? 'Ended' : 'End Match'}
+                    </button>
                     <button
                       className="mt-5 btn btn-warning btn-sm text-white"
                       onClick={() => {
