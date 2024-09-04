@@ -13,10 +13,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
       <Router>
-        {/* <App /> */}
-        <div className="text-2xl text-center">
-          To get it live ! Make the payment clear
-        </div>
+        <App />
         <Toaster />
       </Router>
     </AuthProvider>
