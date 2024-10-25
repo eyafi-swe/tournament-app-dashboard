@@ -58,7 +58,7 @@ const Tournaments = () => {
     const ftechCategorizedMatches = (id: string) => {
       setAllMatchesLoading(true);
 
-      fetch(`http://localhost:5000/contests/matches/${id}`)
+      fetch(`${BASE_URL}/contests/matches/${id}`)
         .then((res) => res.json())
         .then((data) => {
           console.log('all data is loading =>', data);
@@ -130,8 +130,6 @@ const Tournaments = () => {
     id: string,
     game_uid: any,
   ) => {
-    console.log(id, '--->', game_uid);
-
     const url2 = BASE_URL + `/users/deposit-wallet/${email}`;
     const url3 = BASE_URL + `/contests/match/remove-joined/${id}`;
     fetch(url2, {
