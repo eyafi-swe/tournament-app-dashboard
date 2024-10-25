@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { BASE_URL } from '../../consts/const';
-import TableTwo from '../../components/Tables/TableTwo';
-import DefaultLayout from '../../layout/DefaultLayout';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import toast from 'react-hot-toast';
 import Loader from '../../common/MiniLoader/Loader';
-import AddMatchModal from '../../components/Modal/AddMatchModal';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import AddCategoryModal from '../../components/Modal/AddCategoryModal';
-import MatchResultModal from '../../components/Modal/MatchResultModal';
+import AddMatchModal from '../../components/Modal/AddMatchModal';
 import EditMatchModal from '../../components/Modal/EditMatchModal';
+import MatchResultModal from '../../components/Modal/MatchResultModal';
+import TableTwo from '../../components/Tables/TableTwo';
+import { BASE_URL } from '../../consts/const';
+import DefaultLayout from '../../layout/DefaultLayout';
 
 const Tournaments = () => {
   const [matchCAtegories, setMatchCategories] = useState<any[]>([]);
@@ -61,7 +61,7 @@ const Tournaments = () => {
       fetch(`${BASE_URL}/contests/matches/${id}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          console.log('all data is loading =>', data);
           setAllMatches(data);
         })
         .catch((err) => err)
@@ -130,13 +130,15 @@ const Tournaments = () => {
     id: string,
     game_uid: any,
   ) => {
-    console.log(email, amount);
     const url2 = BASE_URL + `/users/deposit-wallet/${email}`;
     const url3 = BASE_URL + `/contests/match/remove-joined/${id}`;
     fetch(url2, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ wallet: amount }),
+      body: JSON.stringify({
+        amount,
+        game_uid: game_uid,
+      }),
     })
       .then((res) => res.json())
       .then((data) => {

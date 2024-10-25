@@ -20,6 +20,27 @@ const EditMatchModal: React.FC<EditMatchModalProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+  function formatTimeForInput(time12h: string) {
+    if (!time12h) return '';
+  
+    const [timeStr, period] = time12h.split(' ');
+    if (!timeStr || !period) return '';
+  
+    let [hours, minutes] = timeStr.split(':');
+    if (!hours || !minutes) return '';
+  
+ 
+    let hours24 = parseInt(hours, 10);
+    if (period === 'PM' && hours24 !== 12) {
+      hours24 += 12; 
+    } else if (period === 'AM' && hours24 === 12) {
+      hours24 = 0; 
+    }
+  
+    return `${hours24.toString().padStart(2, '0')}:${minutes}`;
+  }
+  
+
   function tConvert(time: any) {
     time = time
       .toString()
@@ -185,10 +206,9 @@ const EditMatchModal: React.FC<EditMatchModalProps> = ({
             <input
               type="time"
               required
-              defaultValue={matchInfo.time}
+              defaultValue={formatTimeForInput(matchInfo.time)}
               name="time"
-              placeholder="Type here"
-              className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full "
+              className="input input-sm focus:outline-none mt-1 input-bordered bg-slate-100 w-full"
             />
             <h3 className="font-semibold">Type</h3>
             <select
